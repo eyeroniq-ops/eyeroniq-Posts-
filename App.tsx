@@ -196,7 +196,7 @@ export default function App() {
 
         // 3. Brand Assets (Logo/Colors)
         if (assets) {
-          parts.push({ text: "REF_BRAND_ASSETS (CRITICAL: Use this Logo. EXTRACT EXACT COLORS from this image for the post palette):" });
+          parts.push({ text: "REF_BRAND_ASSETS (MANDATORY BRANDING: This image contains the OFFICIAL LOGO and COLOR PALETTE. You MUST insert this logo into the final design without distortion. Use the exact hex colors found here. This is high priority.):" });
           parts.push({ inlineData: { mimeType: assets.mimeType, data: assets.base64 } });
         }
 
@@ -207,7 +207,7 @@ export default function App() {
         }
 
         if (typeface) {
-          parts.push({ text: "REF_TYPOGRAPHY (Mimic this font style/weight):" });
+          parts.push({ text: "REF_TYPOGRAPHY (FONT REFERENCE: The text in the generated image MUST strictly match this specific font style, weight, and personality. Do not use generic fonts if this is provided.):" });
           parts.push({ inlineData: { mimeType: typeface.mimeType, data: typeface.base64 } });
         }
 
@@ -245,6 +245,11 @@ export default function App() {
           2. **LAYER 2 (MIDDLE)**: Hero Subjects. Place 'REF_HERO_1' ${heroImage2 ? "and 'REF_HERO_2'" : ""} in the scene.
           3. **LAYER 3 (TOP)**: Text Overlay & UI Elements. All text MUST be rendered ON TOP of the hero subjects and background. DO NOT let the subject cover the text.
           
+          ### STRICT BRANDING & TYPOGRAPHY
+          ${assets ? "- **LOGO (MANDATORY)**: You MUST incorporate the logo from 'REF_BRAND_ASSETS'. It must be clearly visible, undistorted, and placed in a standard brand position (e.g., top-left, top-right, or centered above). DO NOT HALLUCINATE A NEW LOGO." : ""}
+          ${assets ? "- **COLORS (MANDATORY)**: STRICTLY use the color palette found in 'REF_BRAND_ASSETS'. This is a branded post." : "- Use a premium, dark studio palette."}
+          ${typeface ? "- **FONTS (MANDATORY)**: Your text rendering MUST MIMIC the visual style of 'REF_TYPOGRAPHY'. Replicate the serif/sans-serif nature, weight (bold/thin), and character width of the provided typeface image." : "- Use modern, clean sans-serif typography (Inter/Helvetica style)."}
+
           ### LAYOUT CONSTRAINTS
           ${safeZone ? "- **SAFE ZONE**: CRITICAL! Maintain generous padding around all edges. No text or logos should touch the border. Keep content centered within a safe area." : ""}
           
@@ -252,20 +257,16 @@ export default function App() {
           ${heroImage1 ? "- **REF_HERO_1**: Integrate as the primary subject." : ""}
           ${heroImage2 ? "- **REF_HERO_2**: Place alongside the primary." : ""}
           
-          ### BRANDING
-          ${assets ? "- **LOGO**: You MUST incorporate the logo from 'REF_BRAND_ASSETS' in a tasteful location (Top Center or Corner)." : ""}
-          ${assets ? "- **COLORS**: STRICTLY use the color palette found in 'REF_BRAND_ASSETS'." : "- Use a premium, dark studio palette."}
-
           ### TEXT CONTENT (RENDER ON TOP LAYER)
           Render the following text elements with professional typography. Ensure high contrast against the background and NO OBSTRUCTION by the hero image:
           ${headline ? `- HEADLINE (Dominant): "${headline}"` : ''}
           ${subtitle ? `- SUBTITLE: "${subtitle}"` : ''}
           ${bodyText ? `- BODY COPY: "${bodyText}"` : ''}
-          ${contactInfo ? `- CTA/FOOTER: "${contactInfo}" ${matchMoodboardCTA && moodboard ? "(Style this CTA visually similar to buttons/calls-to-action found in 'REF_STYLE_MOODBOARD')" : ""}` : ''}
+          ${contactInfo ? `- CTA/FOOTER TEXT: "${contactInfo}"` : (matchMoodboardCTA ? "- CTA: Add a relevant Call-to-Action button (e.g., 'Book Now' or 'Learn More')." : "")}
           
           ### STYLE DIRECTIVES
+          ${matchMoodboardCTA && moodboard ? "- **CTA VISUAL STYLE (CRITICAL)**: Design the Call-to-Action (CTA) button to LOOK EXACTLY like buttons found in 'REF_STYLE_MOODBOARD' (Mimic the Shape, Color, Border, and Drop Shadow)." : ""}
           ${moodboard ? "- Follow the aesthetic direction (lighting, mood, texture) of 'REF_STYLE_MOODBOARD'." : "- Create a modern, professional editorial look."}
-          ${typeface ? "- Match the font personality of 'REF_TYPOGRAPHY'." : "- Use modern, clean sans-serif typography (Inter/Helvetica style)."}
 
           ### ART DIRECTION
           ${artDirection || "Make it look expensive, high-contrast, and professional."}
@@ -514,7 +515,7 @@ export default function App() {
                     title={!moodboard ? "Please upload a Moodboard first" : "Match style"}
                  >
                    {matchMoodboardCTA ? <CheckSquare size={12} className={!moodboard ? "text-studio-600" : "text-accent-500"} /> : <Square size={12} />}
-                   Match CTA style to Moodboard {(!moodboard) && "(Req. Moodboard)"}
+                   Add CTA info & Match style from Moodboard {(!moodboard) && "(Req. Moodboard)"}
                  </button>
                </div>
 
